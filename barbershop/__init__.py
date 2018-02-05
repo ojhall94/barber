@@ -6,6 +6,7 @@ A Python package that aids the user in making dynamic cuts to data in various
 parameter spaces, using a simple GUI.
 
 .. versioncreated:: 0.1
+.. versionchanged:: 0.2
 
 .. codeauthor:: Oliver James Hall <ojh251@student.bham.ac.uk>
 """
@@ -30,13 +31,6 @@ class initialize:
         self.X = _X
         self.Y = _Y
 
-        #Check X and Y are of equal length
-        if len(self.X) != len(self.Y):
-            print('X and Y are not of equal length!')
-            self.evict_shop()
-            print('Please re-initialise barber.')
-            return None
-
         #Premeptively turn both histograms off
         self.hist_x_on = False
         self.hist_y_on = False
@@ -46,6 +40,12 @@ class initialize:
         self.seating = pd.DataFrame()
         self.lowers = pd.DataFrame()
         self.uppers = pd.DataFrame()
+
+        #Check X and Y are of equal length
+        if len(self.X) != len(self.Y):
+            self.evict_shop()
+            print('Please re-initialise barbershop.')
+            return None
 
     def histograms_on(self,x=False,y=False):
         '''Turn on optional histograms for x and y parameter spaces.
@@ -103,21 +103,21 @@ class initialize:
         self.seating[name] = client
 
         #Save the lower and upper values
-        if np.isinfinite(lower):
-            self.lowers[name] = np.nanmin(client)
+        if not np.isfinite(lower):
+            self.lowers[name] = [np.nanmin(client)]
         else:
-            self.lowers[name] = lower
-        if np.isinfinite(upper):
-            self.uppers[name] = np.nanmax(client)
+            self.lowers[name] = [lower]
+        if not np.isfinite(upper):
+            self.uppers[name] = [np.nanmax(client)]
         else:
-            self.uppers[name] = upper
+            self.uppers[name] = [upper]
 
         self.clients += 1
         print('Number of seats in use : '+str(self.clients)+'/5.')
 
         if self.clients == 5:
-            print('The barbershop is now full (5 sets of parameters')
-            print('Please evict a client to add another.')
+            print('The barbershop is now full (5 parameter spaces)')
+            print('Please evict a client if you wish to add another.')
 
     def evict_client(self, name):
         '''
@@ -155,6 +155,14 @@ class initialize:
         '''
         del self.X
         del self.Y
+        del self.hist_x_on = False
+        del self.hist_y_on = False
+        del self.clients = 0
+        del self.seating = pd.DataFrame()
+        del self.lowers = pd.DataFrame()
+        del self.uppers = pd.DataFrame()
+
+        print('All metadata have been deleted from memory.')
         print('Please re-initialize the module.')
 
     def show_mirror(self):
