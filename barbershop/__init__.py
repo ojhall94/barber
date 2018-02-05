@@ -58,7 +58,7 @@ class initialize:
 
     def add_client(self, client, name, lower=-np.inf, upper=np.inf):
         '''
-        A class that allows the user to add a parameter to make cuts in, up to
+        A function that allows the user to add a parameter to make cuts in, up to
         a maximum of five. The user has the option of setting lower and upper
         limits on the cuts in this parameter space. If values are given for either
         'lower', 'upper', or 'both', these are used to make initial cuts to the
@@ -147,3 +147,26 @@ class initialize:
         self.clients -= 1
 
         print('Number of seats in use : '+str(self.clients)+'/5.')
+
+    def evict_shop(self):
+        '''
+        Simple function that allows the user to reset the barbershop class
+        completely by deleting all existing metadata.
+        '''
+        del self.X
+        del self.Y
+        print('Please re-initialize the module.')
+
+    def show_mirror(self):
+        '''
+        A function that plots the data, sliders for cuts, and buttons.
+        It plots:
+            -For each client: a plot of X vs Y coloured according to the client
+                data with corresponding colourbar.
+            -A plot of X vs Y
+            -(Optional): A histogram in X and/or Y
+            -A plot containing up to 10 sliders (two for each client), buttons to
+                reset the cuts on each slider, to save out the data, and to close
+                all plots.
+        '''
+        return None

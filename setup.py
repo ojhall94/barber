@@ -7,7 +7,7 @@ setup(name='barbershop',
       author='Oliver James Hall',
       author_email='ojh251@student.bham.ac.uk',
       license='MIT',
-      packages=['barber'],
+      packages=['barbershop'],
       install_requires=[
             'matplotlib',
             'pandas',
