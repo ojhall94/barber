@@ -183,9 +183,6 @@ class initialize:
                 reset the cuts on each slider, to save out the data, and to close
                 all plots.
         '''
-        #Put X and Y into a dataframe
-        self.odf = pd.DataFrame()
-
         #Make initial cuts
         dff = self.shave(lowers, uppers)
 
@@ -212,7 +209,7 @@ class initialize:
         dff = self.seating[:]
         #Apply cuts cyclicly for every client
         for client in list(self.lowers):
-            dff = dff[dff[client] > lower[client]]
-            dff = dff[dff[client] < upper[client]]
+            dff = dff[dff[client] > lower[client][0]]
+            dff = dff[dff[client] < upper[client][0]]
 
         return dff

@@ -7,4 +7,6 @@ z = np.linspace(0,10)
 
 barber = barbershop.initialize(x, y, 'x', 'y')
 barber.histograms_on(x=True)
-barber.add_client(z, 'z')
+barber.add_client(z, 'z', lower=2., upper=8.)
+
+dff = barber.shave(barber.lowers, barber.uppers)
