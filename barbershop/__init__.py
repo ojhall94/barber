@@ -19,7 +19,7 @@ import glob as glob
 import pandas as pd
 
 class initialize:
-    def __init__(self, _X, _Y):
+    def __init__(self, _X, _Y, _namex, _namey):
         '''
         A class that initialises the barbershop class which all other content is
         appended to.
@@ -27,9 +27,13 @@ class initialize:
         Parameters:
             _X (ndarray): The uncut X values to be used to illustrate the data.
             _Y (ndarray): The uncut Y values to be used to illustrate the data.
+            _namex (str): The name of the X values
+            _namey (str): The name of the Y values
         '''
         self.X = _X
         self.Y = _Y
+        self.namex = _namex
+        self.namey = _namey
 
         #Premeptively turn both histograms off
         self.hist_x_on = False
@@ -37,7 +41,7 @@ class initialize:
 
         #Initializing other metadata
         self.clients = 0
-        self.seating = pd.DataFrame()
+        self.seating = pd.DataFrame({self.namex: self.X, self.namey : self.Y})
         self.lowers = pd.DataFrame()
         self.uppers = pd.DataFrame()
 
@@ -155,12 +159,14 @@ class initialize:
         '''
         del self.X
         del self.Y
-        del self.hist_x_on = False
-        del self.hist_y_on = False
-        del self.clients = 0
-        del self.seating = pd.DataFrame()
-        del self.lowers = pd.DataFrame()
-        del self.uppers = pd.DataFrame()
+        del self.hist_x_on
+        del self.hist_y_on
+        del self.clients
+        del self.seating
+        del self.lowers
+        del self.uppers
+        del self.namex
+        del self.namey
 
         print('All metadata have been deleted from memory.')
         print('Please re-initialize the module.')
@@ -177,4 +183,36 @@ class initialize:
                 reset the cuts on each slider, to save out the data, and to close
                 all plots.
         '''
+        #Put X and Y into a dataframe
+        self.odf = pd.DataFrame()
+
+        #Make initial cuts
+        dff = self.shave(lowers, uppers)
+
+
         return None
+
+    def shave(self, lower, upper):
+        '''
+        A function that takes the full data array 'self.odf' and applies cuts
+        according to the values fed in.
+
+        Parameters:
+            lower (pandas.core.frame.DataFrame): A pandas Dataframe containing
+                the lower boundary of the cut in each parameter space.
+
+            upper (pandas.core.frame.DataFrame): A pandas Dataframe containing
+                the upper boundary of the cut in each parameter space.
+
+        Returns:
+            pandas.core.frame.DataFrame: A pandas Dataframe containing the now
+                cut data for all parameter spaces.
+
+        '''
+        dff = self.seating[:]
+        #Apply cuts cyclicly for every client
+        for client in list(self.lowers):
+            dff = dff[dff[client] > lower[client]]
+            dff = dff[dff[client] < upper[client]]
+
+        return dff
