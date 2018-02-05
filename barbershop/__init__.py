@@ -47,8 +47,13 @@ class initialize:
 
         #Check X and Y are of equal length
         if len(self.X) != len(self.Y):
+            print('X and Y are not of equal length.')
             self.evict_shop()
-            print('Please re-initialise barbershop.')
+            return None
+
+        if any(type(word) != str for word in [self.namex, self.namey]):
+            print('Please enter "name" as a string.')
+            self.evict_shop()
             return None
 
     def histograms_on(self,x=False,y=False):
@@ -216,19 +221,59 @@ class initialize:
 
             Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
             Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
-            return Hfig
 
         #Initialise space for sliders here
         '''STILL GOT TO DO THIS PART.'''
 
         #Initialise all display parameter plots
-        for client in list(self.lowers):
-
-
-
+        cmaps = ['cool','winter','plasma','viridis','rgb']
+        figs, axes = self.get_shells()
+        for idx, client in enumerate(list(self.lowers)):
+            ctemp = axes[idx].scatter(dff[self.namex],dff[self.namey],\
+                        cmap = cmaps[idx], c=dff[client], s=3)
+            figs[idx].colorbar(ctemp, label=client)
+            axes[idx].grid()
+            axes[idx].set_axisbelow(True)
+            axes[idx].set_xlabel(self.namex)
+            axes[idx].set_ylabel(self.namey)
 
 
         return None
+
+    def get_shells(self):
+        '''
+        Simple class that returns N empty figures where N is the number of
+        variables added using the add_client() function.
+        '''
+        if self.clients == 1:
+            f1, a1 = plt.subplots()
+            return f1, a1
+
+        if self.clients == 2:
+            f1, a1 = plt.subplots()
+            f2, a2 = plt.subplots()
+            return (f1, f2), (a1, a2)
+        if self.clients >= 3:
+            f1, a1 = plt.subplots()
+            f2, a2 = plt.subplots()
+            f3, a3 = plt.subplots()
+            return (f1, f2, f3), (a1, a2, f3)
+
+        if self.clients >= 4:
+            f1, a1 = plt.subplots()
+            f2, a2 = plt.subplots()
+            f3, a3 = plt.subplots()
+            f4, a4 = plt.subplots()
+            return (f1, f2, f3, f4), (a1, a2, f3, f4)
+
+        if self.clients == 5:
+            f1, a1 = plt.subplots()
+            f2, a2 = plt.subplots()
+            f3, a3 = plt.subplots()
+            f4, a4 = plt.subplots()
+            f5, a5 = plt.subplots()
+            return (f1, f2, f3, f4, f5), (a1, a2, f3, f4, f5)
+
 
 
     def shave(self, lower, upper):
