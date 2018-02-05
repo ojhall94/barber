@@ -184,10 +184,52 @@ class initialize:
                 all plots.
         '''
         #Make initial cuts
-        dff = self.shave(lowers, uppers)
+        dff = self.shave(self.lowers, self.uppers)
+
+        #Initialise initial histograms if requested
+        if any([self.hist_x_on, self.hist_y_on]):
+            self.bins = int(np.sqrt(len(dff)))      #Save out number of bins for histograms
+            if not all([self.hist_x_on, self.hist_y_on]):
+                #If only one histogram is turned on
+                Hfig, Hax = plt.subplots()              #Create the figure
+                if self.hist_x_on:
+                    Hax.hist(self.seating[self.namex],\
+                            histtype='step', color='k', bins=self.bins)
+                    Hax.set_ylabel('Counts')
+                    Hax.set_xlabel(self.namex)
+                else:
+                    Hax.hist(self.seating[self.namey],\
+                            histtype='step', color='k', bins=self.bins)
+                    Hax.set_ylabel('Counts')
+                    Hax.set_xlabel(self.namey)
+
+            else:
+                Hfig, Hax = plt.subplots(2)              #Create the figure
+                Hax[0].hist(self.seating[self.namex],\
+                        histtype='step', color='k', bins=self.bins)
+                Hax[1].hist(self.seating[self.namey],\
+                        histtype='step', color='k', bins=self.bins)
+                Hax[0].set_ylabel('Counts')
+                Hax[0].set_xlabel(self.namex)
+                Hax[1].set_ylabel('Counts')
+                Hax[1].set_xlabel(self.namey)
+
+            Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
+            Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
+            return Hfig
+
+        #Initialise space for sliders here
+        '''STILL GOT TO DO THIS PART.'''
+
+        #Initialise all display parameter plots
+        for client in list(self.lowers):
+
+
+
 
 
         return None
+
 
     def shave(self, lower, upper):
         '''
@@ -211,5 +253,4 @@ class initialize:
         for client in list(self.lowers):
             dff = dff[dff[client] > lower[client][0]]
             dff = dff[dff[client] < upper[client][0]]
-
         return dff
