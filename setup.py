@@ -1,9 +1,8 @@
 from setuptools import setup
 
-setup(name='barber',
+setup(name='barbershop',
       version='0.1',
-      description='A Python package that aids the user in making dynamic cuts to data in various parameter spaces, using a simple GUI.
-',
+      description='A Python package that aids the user in making dynamic cuts to data in various parameter spaces, using a simple GUI.',
       url='https://github.com/ojhall94/barber',
       author='Oliver James Hall',
       author_email='ojh251@student.bham.ac.uk',
@@ -11,7 +10,6 @@ setup(name='barber',
       packages=['barber'],
       install_requires=[
             'matplotlib',
-            'glob',
             'pandas',
             'datetime',
             'numpy'

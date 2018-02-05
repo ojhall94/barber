@@ -31,7 +31,7 @@ class initialize:
         self.Y = _Y
 
         #Check X and Y are of equal length
-        if len(X) != len(Y):
+        if len(self.X) != len(self.Y):
             print('X and Y are not of equal length!')
             self.evict_shop()
             print('Please re-initialise barber.')
@@ -80,18 +80,23 @@ class initialize:
                 in this parameter space. If no value is given, it takes the
                 highest value in the 'client' ndarray.
         '''
+        #Check that the list of clients isn't already full
+        if self.clients == 5:
+            print('The barbershop is full, please proceed to plot the GUI, or remove clients using the evict_client(name) command.')
+            return None
+
         #Check length of the client is in agreement with X and Y
         if len(client) != len(self.X):
             print('Client is not of equal length with X and Y.')
             print('Client leaving the barbershop.')
-            print('Number of seats free : '+str(self.clients)+'/5.')
+            print('Number of seats in use : '+str(self.clients)+'/5.')
             return None
 
         #Check that name is a string
         if type(name) != str:
             print('Please enter "name" as a string.')
             print('Client leaving the barbershop.')
-            print('Number of seats free : '+str(self.clients)+'/5.')
+            print('Number of seats in use : '+str(self.clients)+'/5.')
             return None
 
         #Adding the data to the existing class dataframe 'self.seating'
@@ -108,7 +113,7 @@ class initialize:
             self.uppers[name] = upper
 
         self.clients += 1
-        print('Number of seats free : '+str(self.clients)+'/5.')
+        print('Number of seats in use : '+str(self.clients)+'/5.')
 
         if self.clients == 5:
             print('The barbershop is now full (5 sets of parameters')
@@ -136,3 +141,9 @@ class initialize:
             return None
 
         #Remove client of title 'name' from the list of parameters
+        del self.seating[name]
+        del self.lowers[name]
+        del self.uppers[name]
+        self.clients -= 1
+
+        print('Number of seats in use : '+str(self.clients)+'/5.')
