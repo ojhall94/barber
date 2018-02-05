@@ -44,6 +44,8 @@ class initialize:
         #Initializing other metadata
         self.clients = 0
         self.seating = pd.DataFrame()
+        self.lowers = pd.DataFrame()
+        self.uppers = pd.DataFrame()
 
     def histograms_on(self,x=False,y=False):
         '''Turn on optional histograms for x and y parameter spaces.
@@ -54,7 +56,7 @@ class initialize:
         self.hist_x_on = x
         self.hist_y_on = y
 
-    def add_client(self, client, lower=-np.inf, upper=np.inf):
+    def add_client(self, client, name, lower=-np.inf, upper=np.inf):
         '''
         A class that allows the user to add a parameter to make cuts in, up to
         a maximum of five. The user has the option of setting lower and upper
@@ -66,6 +68,10 @@ class initialize:
             client (ndarray): an array as the same length as self.X and self.Y,
                 arranged identically, with parameter values for each data point.
 
+            name (str): a string containing the name of the ndarray client,
+                which will be referred to in other functions and printed on the
+                GUI.
+
             lower (float): Default -Inf. The lowest possible value of the cut
                 in this parameter space. If no value is given, it takes the
                 minimum value in the 'client' ndarray.
@@ -75,4 +81,58 @@ class initialize:
                 highest value in the 'client' ndarray.
         '''
         #Check length of the client is in agreement with X and Y
-        if len(client) != len(self.X)
+        if len(client) != len(self.X):
+            print('Client is not of equal length with X and Y.')
+            print('Client leaving the barbershop.')
+            print('Number of seats free : '+str(self.clients)+'/5.')
+            return None
+
+        #Check that name is a string
+        if type(name) != str:
+            print('Please enter "name" as a string.')
+            print('Client leaving the barbershop.')
+            print('Number of seats free : '+str(self.clients)+'/5.')
+            return None
+
+        #Adding the data to the existing class dataframe 'self.seating'
+        self.seating[name] = client
+
+        #Save the lower and upper values
+        if np.isinfinite(lower):
+            self.lowers[name] = np.nanmin(client)
+        else:
+            self.lowers[name] = lower
+        if np.isinfinite(upper):
+            self.uppers[name] = np.nanmax(client)
+        else:
+            self.uppers[name] = upper
+
+        self.clients += 1
+        print('Number of seats free : '+str(self.clients)+'/5.')
+
+        if self.clients == 5:
+            print('The barbershop is now full (5 sets of parameters')
+            print('Please evict a client to add another.')
+
+    def evict_client(self, name):
+        '''
+        Simple function that allows the user to remove a set of data in a given
+        parameter space by passing the name it was given when added to the
+        'add_client' function.
+
+        Parameters:
+            name (str): a string containing the name of the ndarray client,
+                which will be referred to in other functions and printed on the
+                GUI.
+        '''
+        #Check that name is a string
+        if type(name) != str:
+            print('Please enter "name" as a string.')
+            return None
+
+        #Check this name is actually included in the list of clients
+        if not any(word == name for word in list(self.seating)):
+            print('There is no set of parameters in the list of clients with this name.')
+            return None
+
+        #Remove client of title 'name' from the list of parameters
