@@ -18,6 +18,9 @@ from matplotlib.widgets import Slider, Button
 import glob as glob
 import pandas as pd
 
+def update(val):
+    return None
+
 class initialize:
     def __init__(self, _X, _Y, _namex, _namey):
         '''
@@ -222,12 +225,10 @@ class initialize:
             Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
             Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-        #Initialise space for sliders here
-        '''STILL GOT TO DO THIS PART.'''
-
         #Initialise all display parameter plots
-        cmaps = ['cool','winter','plasma','viridis','rgb']
+        cmaps = ['cool','winter','plasma','viridis','nipy_spectral']
         figs, axes = self.get_shells()
+        #Create first build of plots
         for idx, client in enumerate(list(self.lowers)):
             ctemp = axes[idx].scatter(dff[self.namex],dff[self.namey],\
                         cmap = cmaps[idx], c=dff[client], s=3)
@@ -237,6 +238,45 @@ class initialize:
             axes[idx].set_xlabel(self.namex)
             axes[idx].set_ylabel(self.namey)
 
+        #Initialise sliders
+        '''THIS COMPONENT IS ITERATIVE BUT THE GUI IS NOT IDEAL
+        TO DO:
+            -Add space for buttons
+            -Call axes from a seperate function depending on number of clients
+        '''
+        Sfig, Sax = plt.subplots(2*self.clients, figsize=(10,2*self.clients))
+        axcolor = 'white'
+        sliders = []
+        for idx, client in enumerate(list(self.lowers)):
+            #Maximum value in parameter space 'client'
+            a1 = Slider(Sax[int(2*idx)], 'Min '+client,\
+                            round(np.nanmin(self.seating[client])),\
+                            round(np.nanmax(self.seating[client])),\
+                            valinit = self.lowers[client][0])
+            #Minimum value in parameter space 'client'
+            a2 = Slider(Sax[int(2*idx)+1], 'Max '+client,\
+                            round(np.nanmin(self.seating[client])),\
+                            round(np.nanmax(self.seating[client])),\
+                            valinit = self.uppers[client][0])
+
+        a1.on_changed(update)
+        a2.on_changed(update)
+        #Assign update function to active sliders
+        # if self.clients == 1:
+        #     sliders[0].on_changed(update)
+        #     sliders[1].on_changed(update)
+        # if self.clients == 2:
+        #     sliders[2].on_changed(update)
+        #     sliders[3].on_changed(update)
+        # if self.clients == 3:
+        #     sliders[4].on_changed(update)
+        #     sliders[5].on_changed(update)
+        # if self.clients == 4:
+        #     sliders[6].on_changed(update)
+        #     sliders[7].on_changed(update)
+        # if self.clients == 5:
+        #     sliders[8].on_changed(update)
+        #     sliders[9].on_changed(update)
 
         return None
 
@@ -247,24 +287,25 @@ class initialize:
         '''
         if self.clients == 1:
             f1, a1 = plt.subplots()
-            return f1, a1
+            return [f1], [a1]
 
         if self.clients == 2:
             f1, a1 = plt.subplots()
             f2, a2 = plt.subplots()
             return (f1, f2), (a1, a2)
-        if self.clients >= 3:
+
+        if self.clients == 3:
             f1, a1 = plt.subplots()
             f2, a2 = plt.subplots()
             f3, a3 = plt.subplots()
-            return (f1, f2, f3), (a1, a2, f3)
+            return (f1, f2, f3), (a1, a2, a3)
 
-        if self.clients >= 4:
+        if self.clients == 4:
             f1, a1 = plt.subplots()
             f2, a2 = plt.subplots()
             f3, a3 = plt.subplots()
             f4, a4 = plt.subplots()
-            return (f1, f2, f3, f4), (a1, a2, f3, f4)
+            return (f1, f2, f3, f4), (a1, a2, a3, a4)
 
         if self.clients == 5:
             f1, a1 = plt.subplots()
@@ -272,9 +313,7 @@ class initialize:
             f3, a3 = plt.subplots()
             f4, a4 = plt.subplots()
             f5, a5 = plt.subplots()
-            return (f1, f2, f3, f4, f5), (a1, a2, f3, f4, f5)
-
-
+            return (f1, f2, f3, f4, f5), (a1, a2, a3, a4, a5)
 
     def shave(self, lower, upper):
         '''
