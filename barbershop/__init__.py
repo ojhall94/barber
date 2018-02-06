@@ -18,10 +18,7 @@ from matplotlib.widgets import Slider, Button
 import glob as glob
 import pandas as pd
 
-from external_functions import barbicideclass
-
-def update(val):
-    return None
+from external_functions import *
 
 class open:
     def __init__(self, _X, _Y, _namex, _namey):
@@ -196,6 +193,7 @@ class open:
         #Make initial cuts
         dff = self.shave(self.lowers, self.uppers)
 
+        '''PUT HISTOGRAMS IN A SEPERATE FUNCTION'''
         #Initialise initial histograms if requested
         if any([self.hist_x_on, self.hist_y_on]):
             self.bins = int(np.sqrt(len(dff)))      #Save out number of bins for histograms
@@ -229,16 +227,16 @@ class open:
 
         #Initialise all display parameter plots
         cmaps = ['cool','winter','plasma','viridis','nipy_spectral']
-        figs, axes = self.get_shells()
+        self.figs, self.axes = self.get_shells()
         #Create first build of plots
         for idx, client in enumerate(list(self.lowers)):
-            ctemp = axes[idx].scatter(dff[self.namex],dff[self.namey],\
+            ctemp = self.axes[idx].scatter(dff[self.namex],dff[self.namey],\
                         cmap = cmaps[idx], c=dff[client], s=3)
-            figs[idx].colorbar(ctemp, label=client)
-            axes[idx].grid()
-            axes[idx].set_axisbelow(True)
-            axes[idx].set_xlabel(self.namex)
-            axes[idx].set_ylabel(self.namey)
+            self.figs[idx].colorbar(ctemp, label=client)
+            self.axes[idx].grid()
+            self.axes[idx].set_axisbelow(True)
+            self.axes[idx].set_xlabel(self.namex)
+            self.axes[idx].set_ylabel(self.namey)
 
         #Initialise sliders
         '''THIS COMPONENT IS ITERATIVE BUT THE GUI IS NOT IDEAL
@@ -247,6 +245,8 @@ class open:
         '''
         #Initialise barbercide class for button functions
         barbicide = barbicideclass(self)
+        #Initialise haircut class for slider functions
+        haircut = haircutclass(self)
         axcolor = 'white'   #Defining button colours
 
         Sfig, Sax = plt.subplots(2*self.clients, figsize=(6,self.clients))
@@ -276,8 +276,8 @@ class open:
                 self.a1maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
-                self.a1min.on_changed(update)
-                self.a1max.on_changed(update)
+                self.a1min.on_changed(haircut.update)
+                self.a1max.on_changed(haircut.update)
                 self.a1minres.on_clicked(barbicide.a1min)
                 self.a1maxres.on_clicked(barbicide.a1max)
 
@@ -303,8 +303,8 @@ class open:
                 self.a2maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
-                self.a2min.on_changed(update)
-                self.a2max.on_changed(update)
+                self.a2min.on_changed(haircut.update)
+                self.a2max.on_changed(haircut.update)
                 self.a2minres.on_clicked(barbicide.a2min)
                 self.a2maxres.on_clicked(barbicide.a2max)
 
@@ -330,8 +330,8 @@ class open:
                 self.a3maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
-                self.a3min.on_changed(update)
-                self.a3max.on_changed(update)
+                self.a3min.on_changed(haircut.update)
+                self.a3max.on_changed(haircut.update)
                 self.a3minres.on_clicked(barbicide.a3min)
                 self.a3maxres.on_clicked(barbicide.a3max)
 
@@ -357,8 +357,8 @@ class open:
                 self.a4maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
-                self.a4min.on_changed(update)
-                self.a4max.on_changed(update)
+                self.a4min.on_changed(haircut.update)
+                self.a4max.on_changed(haircut.update)
                 self.a4minres.on_clicked(barbicide.a4min)
                 self.a4maxres.on_clicked(barbicide.a4max)
 
@@ -384,11 +384,10 @@ class open:
                 self.a5maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
-                self.a5min.on_changed(update)
-                self.a5max.on_changed(update)
+                self.a5min.on_changed(haircut.update)
+                self.a5max.on_changed(haircut.update)
                 self.a5minres.on_clicked(barbicide.a5min)
                 self.a5maxres.on_clicked(barbicide.a5max)
-
 
         #Build the Save, Close Plots, Reset All commands
         y0 = (Sax[-1].get_position().y0) - (Sax[0].get_position().y0 - Sax[1].get_position().y0)
@@ -404,8 +403,7 @@ class open:
         self.resetbut = Button(tax, 'Reset All', color=axcolor, hovercolor='orange')
         self.resetbut.on_clicked(barbicide.all)
 
-        return Sfig, Sax
-
+        plt.show()
 
     def get_shells(self):
         '''

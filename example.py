@@ -19,7 +19,6 @@ barber.add_client(z, 'c')
 
 
 barber.show_mirror()
-cp.show()
 
 
 '''
