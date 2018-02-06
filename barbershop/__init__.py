@@ -201,21 +201,21 @@ class open:
                 #If only one histogram is turned on
                 Hfig, Hax = plt.subplots()              #Create the figure
                 if self.hist_x_on:
-                    Hax.hist(self.seating[self.namex],\
+                    Hax.hist(dff[self.namex],\
                             histtype='step', color='k', bins=self.bins)
                     Hax.set_ylabel('Counts')
                     Hax.set_xlabel(self.namex)
                 else:
-                    Hax.hist(self.seating[self.namey],\
+                    Hax.hist(dff[self.namey],\
                             histtype='step', color='k', bins=self.bins)
                     Hax.set_ylabel('Counts')
                     Hax.set_xlabel(self.namey)
 
             else:
-                Hfig, Hax = plt.subplots(2)              #Create the figure
-                Hax[0].hist(self.seating[self.namex],\
+                Hfig, Hax = plt.subplots(2)         #Create the figure
+                Hax[0].hist(dff[self.namex],\
                         histtype='step', color='k', bins=self.bins)
-                Hax[1].hist(self.seating[self.namey],\
+                Hax[1].hist(dff[self.namey],\
                         histtype='step', color='k', bins=self.bins)
                 Hax[0].set_ylabel('Counts')
                 Hax[0].set_xlabel(self.namex)
@@ -242,41 +242,206 @@ class open:
         '''THIS COMPONENT IS ITERATIVE BUT THE GUI IS NOT IDEAL
         TO DO:
             -Add space for buttons
-            -Call axes from a seperate function depending on number of clients
         '''
         axcolor = 'white'
         Sfig, Sax = plt.subplots(2*self.clients, figsize=(6,self.clients))
-        sliders = []
-        for idx, client in enumerate(list(self.lowers)):
-            #Maximum value in parameter space 'client'
-            self.a1 = Slider(Sax[int(2*idx)], 'Min '+client,\
-                            round(np.nanmin(self.seating[client])),\
-                            round(np.nanmax(self.seating[client])),\
-                            valinit = self.lowers[client][0])
-            #Minimum value in parameter space 'client'
-            self.a2 = Slider(Sax[int(2*idx)+1], 'Max '+client,\
-                            round(np.nanmin(self.seating[client])),\
-                            round(np.nanmax(self.seating[client])),\
-                            valinit = self.uppers[client][0])
+        #Adjusting the figure for buttons
+        Sfig.subplots_adjust(bottom=(1./(2*self.clients+0.8)), right=0.70)
 
-        # Assign update function to active sliders6
-        # if self.clients == 1:
-        #     sliders[0].on_changed(update)
-        #     sliders[1].on_changed(update)
-        # if self.clients == 2:
-        #     sliders[2].on_changed(update)
-        #     sliders[3].on_changed(update)
-        # if self.clients == 3:
-        #     sliders[4].on_changed(update)
-        #     sliders[5].on_changed(update)
-        # if self.clients == 4:
-        #     sliders[6].on_changed(update)
-        #     sliders[7].on_changed(update)
-        # if self.clients == 5:
-        #     sliders[8].on_changed(update)
-        #     sliders[9].on_changed(update)
+        #Note: This section can not be iterative, and is hardcoded
+        for idx, client in enumerate(list(self.lowers)):
+            if (self.clients >= 1) & (idx == 0):
+                #Minimum value in parameter space 'client'
+                self.a1min = Slider(Sax[int(2*idx)], 'Min '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.lowers[client][0])
+                #Maximum value in parameter space 'client'
+                self.a1max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.uppers[client][0])
+                #Reset button for minimum slider
+                l = Sax[int(2*idx)].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a1minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
+                #Reset button for maximum slider
+                l = Sax[int(2*idx)+1].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a1maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
+
+                #Update commands for the widgets
+                self.a1min.on_changed(update)
+                self.a1max.on_changed(update)
+                self.a1minres.on_clicked(self.barbicide('a1min'))
+                self.a1maxres.on_clicked(self.barbicide('a1max'))
+
+            if (self.clients >= 2) & (idx == 1):
+                #Maximum value in parameter space 'client'
+                self.a2min = Slider(Sax[int(2*idx)], 'Min '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.lowers[client][0])
+                #Minimum value in parameter space 'client'
+                self.a2max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.uppers[client][0])
+
+                #Reset button for minimum slider
+                l = Sax[int(2*idx)].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a2minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
+                #Reset button for maximum slider
+                l = Sax[int(2*idx)+1].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a2maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
+
+                #Update commands for the widgets
+                self.a2min.on_changed(update)
+                self.a2max.on_changed(update)
+                self.a2minres.on_clicked(self.barbicide('a2min'))
+                self.a2maxres.on_clicked(self.barbicide('a2max'))
+
+            if (self.clients >= 3) & (idx == 2):
+                #Maximum value in parameter space 'client'
+                self.a3min = Slider(Sax[int(2*idx)], 'Min '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.lowers[client][0])
+                #Minimum value in parameter space 'client'
+                self.a3max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.uppers[client][0])
+
+                #Reset button for minimum slider
+                l = Sax[int(2*idx)].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a3minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
+                #Reset button for maximum slider
+                l = Sax[int(2*idx)+1].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a3maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
+
+                #Update commands for the widgets
+                self.a3min.on_changed(update)
+                self.a3max.on_changed(update)
+                self.a3minres.on_clicked(self.barbicide('a3min'))
+                self.a3maxres.on_clicked(self.barbicide('a3max'))
+
+            if (self.clients >= 4) & (idx == 3):
+                #Maximum value in parameter space 'client'
+                self.a4min = Slider(Sax[int(2*idx)], 'Min '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.lowers[client][0])
+                #Minimum value in parameter space 'client'
+                self.a4max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.uppers[client][0])
+
+                #Reset button for minimum slider
+                l = Sax[int(2*idx)].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a4minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
+                #Reset button for maximum slider
+                l = Sax[int(2*idx)+1].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a4maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
+
+                #Update commands for the widgets
+                self.a4min.on_changed(update)
+                self.a4max.on_changed(update)
+                self.a4minres.on_clicked(self.barbicide('a4min'))
+                self.a4maxres.on_clicked(self.barbicide('a4max'))
+
+            if (self.clients == 5) & (idx == 4):
+                #Maximum value in parameter space 'client'
+                self.a5min = Slider(Sax[int(2*idx)], 'Min '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.lowers[client][0])
+                #Minimum value in parameter space 'client'
+                self.a5max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
+                                round(np.nanmin(self.seating[client])),\
+                                round(np.nanmax(self.seating[client])),\
+                                valinit = self.uppers[client][0])
+
+                #Reset button for minimum slider
+                l = Sax[int(2*idx)].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a5minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
+                #Reset button for maximum slider
+                l = Sax[int(2*idx)+1].get_position()
+                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                self.a5maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
+
+                #Update commands for the widgets
+                self.a5min.on_changed(update)
+                self.a5max.on_changed(update)
+                self.a5minres.on_clicked(self.barbicide('a5min'))
+                self.a5maxres.on_clicked(self.barbicide('a5max'))
+
+
+        #Build the Save, Close Plots, Reset All commands
+        y0 = (Sax[-1].get_position().y0) - (Sax[0].get_position().y0 - Sax[1].get_position().y0)
+        tax = plt.axes([l.x0, y0, (l.width-0.05)/2, l.height])
+        self.savebut = Button(tax, 'Save Cuts', color=axcolor, hovercolor='green')
+        self.savebut.on_clicked(self.save())
+
+        tax = plt.axes([l.x0+(l.width-0.05)/2+0.05, y0, (l.width-0.05)/2, l.height])
+        self.closebut = Button(tax, 'Close Plots', color=axcolor, hovercolor='red')
+        # self.closebut.on_clicked(self.barbicide('plots'))
+
+        tax = plt.axes([l.x0+l.width+0.1, y0, 0.15, l.height])
+        self.resetbut = Button(tax, 'Reset All', color=axcolor, hovercolor='orange')
+        self.resetbut.on_clicked(self.barbicide('all'))
 
         return Sfig, Sax
+
+    def barbicide(self, button):
+        '''
+        A function that holds the hard-code commands for all the reset buttons,
+        simply to keep the main body of code tidy.
+
+        Parameters:
+            button (str): The name of the button clicked in the GUI.
+        '''
+        if button == 'all':
+            self.a1min.reset()
+            self.a1max.reset()
+            self.a2min.reset()
+            self.a2max.reset()
+            self.a3min.reset()
+            self.a3max.reset()
+            self.a4min.reset()
+            self.a4max.reset()
+            self.a5min.reset()
+            self.a5max.reset()
+        if button == 'a1min':
+            self.a1min.reset()
+        if button == 'a1max':
+            self.a1max.reset()
+        if button == 'a2min':
+            self.a2min.reset()
+        if button == 'a2max':
+            self.a2max.reset()
+        if button == 'a3min':
+            self.a3min.reset()
+        if button == 'a3max':
+            self.a3max.reset()
+        if button == 'a4min':
+            self.a4min.reset()
+        if button == 'a4max':
+            self.a4max.reset()
+        if button == 'a5min':
+            self.a5min.reset()
+        if button == 'a5max':
+            self.a5max.reset()
+        if button == 'plots':
+            plt.close('all')
 
     def get_shells(self):
         '''
@@ -336,3 +501,6 @@ class open:
             dff = dff[dff[client] > lower[client][0]]
             dff = dff[dff[client] < upper[client][0]]
         return dff
+
+    def save(self):
+        print ('Not done yet')
