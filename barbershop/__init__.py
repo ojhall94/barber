@@ -21,7 +21,7 @@ import pandas as pd
 def update(val):
     return None
 
-class initialize:
+class open:
     def __init__(self, _X, _Y, _namex, _namey):
         '''
         A class that initialises the barbershop class which all other content is
@@ -51,12 +51,12 @@ class initialize:
         #Check X and Y are of equal length
         if len(self.X) != len(self.Y):
             print('X and Y are not of equal length.')
-            self.evict_shop()
+            self.close_shop()
             return None
 
         if any(type(word) != str for word in [self.namex, self.namey]):
             print('Please enter "name" as a string.')
-            self.evict_shop()
+            self.close_shop()
             return None
 
     def histograms_on(self,x=False,y=False):
@@ -160,7 +160,7 @@ class initialize:
 
         print('Number of seats in use : '+str(self.clients)+'/5.')
 
-    def evict_shop(self):
+    def close_shop(self):
         '''
         Simple function that allows the user to reset the barbershop class
         completely by deleting all existing metadata.
@@ -244,24 +244,22 @@ class initialize:
             -Add space for buttons
             -Call axes from a seperate function depending on number of clients
         '''
-        Sfig, Sax = plt.subplots(2*self.clients, figsize=(10,2*self.clients))
         axcolor = 'white'
+        Sfig, Sax = plt.subplots(2*self.clients, figsize=(6,self.clients))
         sliders = []
         for idx, client in enumerate(list(self.lowers)):
             #Maximum value in parameter space 'client'
-            a1 = Slider(Sax[int(2*idx)], 'Min '+client,\
+            self.a1 = Slider(Sax[int(2*idx)], 'Min '+client,\
                             round(np.nanmin(self.seating[client])),\
                             round(np.nanmax(self.seating[client])),\
                             valinit = self.lowers[client][0])
             #Minimum value in parameter space 'client'
-            a2 = Slider(Sax[int(2*idx)+1], 'Max '+client,\
+            self.a2 = Slider(Sax[int(2*idx)+1], 'Max '+client,\
                             round(np.nanmin(self.seating[client])),\
                             round(np.nanmax(self.seating[client])),\
                             valinit = self.uppers[client][0])
 
-        a1.on_changed(update)
-        a2.on_changed(update)
-        #Assign update function to active sliders
+        # Assign update function to active sliders6
         # if self.clients == 1:
         #     sliders[0].on_changed(update)
         #     sliders[1].on_changed(update)
@@ -278,7 +276,7 @@ class initialize:
         #     sliders[8].on_changed(update)
         #     sliders[9].on_changed(update)
 
-        return None
+        return Sfig, Sax
 
     def get_shells(self):
         '''
