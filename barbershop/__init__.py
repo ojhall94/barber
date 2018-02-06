@@ -18,6 +18,8 @@ from matplotlib.widgets import Slider, Button
 import glob as glob
 import pandas as pd
 
+from external_functions import barbicideclass
+
 def update(val):
     return None
 
@@ -243,7 +245,10 @@ class open:
         TO DO:
             -Add space for buttons
         '''
-        axcolor = 'white'
+        #Initialise barbercide class for button functions
+        barbicide = barbicideclass(self)
+        axcolor = 'white'   #Defining button colours
+
         Sfig, Sax = plt.subplots(2*self.clients, figsize=(6,self.clients))
         #Adjusting the figure for buttons
         Sfig.subplots_adjust(bottom=(1./(2*self.clients+0.8)), right=0.70)
@@ -273,8 +278,8 @@ class open:
                 #Update commands for the widgets
                 self.a1min.on_changed(update)
                 self.a1max.on_changed(update)
-                self.a1minres.on_clicked(self.barbicide('a1min'))
-                self.a1maxres.on_clicked(self.barbicide('a1max'))
+                self.a1minres.on_clicked(barbicide.a1min)
+                self.a1maxres.on_clicked(barbicide.a1max)
 
             if (self.clients >= 2) & (idx == 1):
                 #Maximum value in parameter space 'client'
@@ -300,8 +305,8 @@ class open:
                 #Update commands for the widgets
                 self.a2min.on_changed(update)
                 self.a2max.on_changed(update)
-                self.a2minres.on_clicked(self.barbicide('a2min'))
-                self.a2maxres.on_clicked(self.barbicide('a2max'))
+                self.a2minres.on_clicked(barbicide.a2min)
+                self.a2maxres.on_clicked(barbicide.a2max)
 
             if (self.clients >= 3) & (idx == 2):
                 #Maximum value in parameter space 'client'
@@ -327,8 +332,8 @@ class open:
                 #Update commands for the widgets
                 self.a3min.on_changed(update)
                 self.a3max.on_changed(update)
-                self.a3minres.on_clicked(self.barbicide('a3min'))
-                self.a3maxres.on_clicked(self.barbicide('a3max'))
+                self.a3minres.on_clicked(barbicide.a3min)
+                self.a3maxres.on_clicked(barbicide.a3max)
 
             if (self.clients >= 4) & (idx == 3):
                 #Maximum value in parameter space 'client'
@@ -354,8 +359,8 @@ class open:
                 #Update commands for the widgets
                 self.a4min.on_changed(update)
                 self.a4max.on_changed(update)
-                self.a4minres.on_clicked(self.barbicide('a4min'))
-                self.a4maxres.on_clicked(self.barbicide('a4max'))
+                self.a4minres.on_clicked(barbicide.a4min)
+                self.a4maxres.on_clicked(barbicide.a4max)
 
             if (self.clients == 5) & (idx == 4):
                 #Maximum value in parameter space 'client'
@@ -381,8 +386,8 @@ class open:
                 #Update commands for the widgets
                 self.a5min.on_changed(update)
                 self.a5max.on_changed(update)
-                self.a5minres.on_clicked(self.barbicide('a5min'))
-                self.a5maxres.on_clicked(self.barbicide('a5max'))
+                self.a5minres.on_clicked(barbicide.a5min)
+                self.a5maxres.on_clicked(barbicide.a5max)
 
 
         #Build the Save, Close Plots, Reset All commands
@@ -393,55 +398,14 @@ class open:
 
         tax = plt.axes([l.x0+(l.width-0.05)/2+0.05, y0, (l.width-0.05)/2, l.height])
         self.closebut = Button(tax, 'Close Plots', color=axcolor, hovercolor='red')
-        # self.closebut.on_clicked(self.barbicide('plots'))
+        self.closebut.on_clicked(barbicide.plots)
 
         tax = plt.axes([l.x0+l.width+0.1, y0, 0.15, l.height])
         self.resetbut = Button(tax, 'Reset All', color=axcolor, hovercolor='orange')
-        self.resetbut.on_clicked(self.barbicide('all'))
+        self.resetbut.on_clicked(barbicide.all)
 
         return Sfig, Sax
 
-    def barbicide(self, button):
-        '''
-        A function that holds the hard-code commands for all the reset buttons,
-        simply to keep the main body of code tidy.
-
-        Parameters:
-            button (str): The name of the button clicked in the GUI.
-        '''
-        if button == 'all':
-            self.a1min.reset()
-            self.a1max.reset()
-            self.a2min.reset()
-            self.a2max.reset()
-            self.a3min.reset()
-            self.a3max.reset()
-            self.a4min.reset()
-            self.a4max.reset()
-            self.a5min.reset()
-            self.a5max.reset()
-        if button == 'a1min':
-            self.a1min.reset()
-        if button == 'a1max':
-            self.a1max.reset()
-        if button == 'a2min':
-            self.a2min.reset()
-        if button == 'a2max':
-            self.a2max.reset()
-        if button == 'a3min':
-            self.a3min.reset()
-        if button == 'a3max':
-            self.a3max.reset()
-        if button == 'a4min':
-            self.a4min.reset()
-        if button == 'a4max':
-            self.a4max.reset()
-        if button == 'a5min':
-            self.a5min.reset()
-        if button == 'a5max':
-            self.a5max.reset()
-        if button == 'plots':
-            plt.close('all')
 
     def get_shells(self):
         '''
