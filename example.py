@@ -20,13 +20,17 @@ barber.histograms_on(x=True,y=True)
 
 barber.add_client('z', lower=1., upper=5.)
 barber.add_client('n')
-barber.add_client('a')
-barber.add_client('b')
-barber.add_client('c')
+# barber.add_client('a')
+# barber.add_client('b')
+# barber.add_client('c')
 
 barber.show_mirror()
 
-# del barber
+barber.close_shop()
+barber = barbershop.open(df, 'x', 'z')
+barber.get_regular('barber_cuts.csv')
+
+del barber
 
 '''
 barbiside [reset cuts]?

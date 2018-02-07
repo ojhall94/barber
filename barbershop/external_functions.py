@@ -160,11 +160,14 @@ class haircutclass:
         for client in list(self.barber.lowers):
             out = out[out[client] >= lower[client][0]]
             out = out[out[client] <= upper[client][0]]
-        out.to_csv('dataframe_cuts.csv',sep=',')
+        out.to_csv('dataframe_cuts.csv',header=True,sep=' ')
 
         #Save out the cuts if the user wants to apply them again
-        cut = pd.concat([lower, upper], keys=['lower','upper'])
-        cut.to_csv('barber_cuts.csv',sep=',')
+        cut = pd.concat([lower, upper])
+        cut.index = ['lower','upper']
+        cut.to_csv('barber_cuts.csv',header=True,sep=' ')
+
+        plt.close('all')
 
 def get_histograms(barber, dff):
     uu = np.vstack((dff[barber.namex].values, dff[barber.namey].values))

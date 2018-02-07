@@ -111,18 +111,21 @@ class open:
         #Check that the list of clients isn't already full
         if self.clients == 5:
             print('The barbershop is full, please proceed to plot the GUI, or remove clients using the evict_client(name) command.')
+            return None
 
         #Check length of the client is in agreement with X and Y
         if len(client) != len(self.X):
             print('Client is not of equal length with X and Y.')
             print('Client leaving the barbershop.')
             print('Number of seats in use : '+str(self.clients)+'/5.')
+            return None
 
         #Check that name is a string
         if type(name) != str:
             print('Please enter "name" as a string.')
             print('Client leaving the barbershop.')
             print('Number of seats in use : '+str(self.clients)+'/5.')
+            return None
 
         #Adding the data to the existing class dataframe 'self.seating'
         self.seating[name] = client
@@ -192,6 +195,54 @@ class open:
         print('All array and cuts metadata have been deleted from memory.')
         print('Please re-initialize the module.')
         print('\n\n')
+
+    def get_regular(self, sfile):
+        '''
+        A function that allows the user to apply identical cuts to the same parameter
+        spaces for a new dataframe saved from a previous set of cuts.
+
+        NOTE: This class overwrites all loaded clients.
+
+        Parameters:
+            sfile (str): The location of the .csv file containing the cuts to be
+            applied to the self.core_df dataframe.
+        '''
+        try:
+            reg = pd.DataFrame.from_csv(sfile,sep=' ')
+        except IOError:
+            print('This file does not exist. Please fill in a correct file path.')
+            return None
+        try:
+            l = reg.loc['lower']
+            u = reg.loc['upper']
+            self.lowers = pd.DataFrame()
+            self.uppers = pd.DataFrame()
+            for client in l.index:
+                self.lowers[client] = [l[client]]
+                self.uppers[client] = [u[client]]
+
+        except KeyError:
+            print('Please make sure you fill in a path to the correct file.')
+            return None
+
+        #Check all the regular names are in the loaded core_df
+        for client in list(self.lowers):
+            if all(word != client for word in list(self.core_df)):
+                print('The label '+client+' is not in the loaded dataframe.')
+                print('Please either make new cuts or reload barbershop after updating the labels in your dataframe.')
+                return None
+
+        print('All read-in labels correspond to columns in the loaded dataframe.')
+        if self.clients > 0:
+            print('Overwriting current clients...')
+            self.seating = pd.DataFrame()
+            self.clients == 0
+        for client in list(self.lowers):
+            self.seating[client] = self.core_df[client]
+            self.clients += 1
+            print('Number of seats in use : '+str(self.clients)+'/5.')
+
+        self.show_mirror()
 
     def show_mirror(self):
         '''
