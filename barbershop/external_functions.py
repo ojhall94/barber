@@ -177,7 +177,7 @@ def get_histograms(barber, dff):
         if not all([barber.hist_x_on, barber.hist_y_on]):
             #If only one histogram is turned on
             barber.Hax.cla()
-            if hist_x_on:
+            if barber.hist_x_on:
                 #Plot original line in red
                 barber.Hax.hist(\
                     barber.shave(barber.lowers, barber.uppers)[barber.namex],\
