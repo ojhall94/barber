@@ -111,21 +111,18 @@ class open:
         #Check that the list of clients isn't already full
         if self.clients == 5:
             print('The barbershop is full, please proceed to plot the GUI, or remove clients using the evict_client(name) command.')
-            return None
 
         #Check length of the client is in agreement with X and Y
         if len(client) != len(self.X):
             print('Client is not of equal length with X and Y.')
             print('Client leaving the barbershop.')
             print('Number of seats in use : '+str(self.clients)+'/5.')
-            return None
 
         #Check that name is a string
         if type(name) != str:
             print('Please enter "name" as a string.')
             print('Client leaving the barbershop.')
             print('Number of seats in use : '+str(self.clients)+'/5.')
-            return None
 
         #Adding the data to the existing class dataframe 'self.seating'
         self.seating[name] = client
@@ -231,7 +228,7 @@ class open:
         INITIATING PLOTS
         '''
         #Initialise all display parameter plots
-        cmaps = ['nipy_spectral','winter','plasma','viridis','cool']
+        cmaps = ['autumn','winter','plasma','viridis','cool']
         self.figs, self.axes = self.get_shells()
         #Create first build of plots
         for idx, client in enumerate(list(self.lowers)):

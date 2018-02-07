@@ -12,24 +12,22 @@ import pandas as pd
 x = np.arange(10)
 y = np.arange(10)
 z = np.arange(10)
-n = np.arange(10)
-df = pd.DataFrame({'x':x, 'y':y, 'z':z, 'n':n})
+df = pd.DataFrame({'x':x, 'y':y, 'z':z, 'n':z, 'a':z, 'b':z, 'c':z})
 
-
+print(df.info())
 barber = barbershop.open(df, 'x', 'y')
 barber.histograms_on(x=True,y=True)
 
 barber.add_client('z', lower=1., upper=5.)
-# barber.add_client(z, 'n')
+barber.add_client('n')
 barber.add_client('a')
-# barber.add_client(z, 'b')
-# barber.add_client(z, 'c')
+barber.add_client('b')
+barber.add_client('c')
 
 barber.show_mirror()
 
 # del barber
 
 '''
-check_seating
 barbiside [reset cuts]?
 '''

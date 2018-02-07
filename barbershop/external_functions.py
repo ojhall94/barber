@@ -128,8 +128,43 @@ class haircutclass:
         #Update the histograms
         get_histograms(self.barber, dff)
 
-    def save(self, val):
-        print('hi')
+    def save(self, event):
+        #Define cut dataframes
+        lower = pd.DataFrame()
+        upper = pd.DataFrame()
+
+        #Append the slider cut values into this local dataframe
+        for idx, client in enumerate(list(self.barber.lowers)):
+            if (self.barber.clients >= 1) & (idx == 0):
+                lower[client] = [self.barber.a1min.val]
+                upper[client] = [self.barber.a1max.val]
+
+            if (self.barber.clients >= 2) & (idx == 1):
+                lower[client] = [self.barber.a2min.val]
+                upper[client] = [self.barber.a2max.val]
+
+            if (self.barber.clients >= 3) & (idx == 2):
+                lower[client] = [self.barber.a3min.val]
+                upper[client] = [self.barber.a3max.val]
+
+            if (self.barber.clients >= 4) & (idx == 3):
+                lower[client] = [self.barber.a4min.val]
+                upper[client] = [self.barber.a4max.val]
+
+            if (self.barber.clients == 5) & (idx == 4):
+                lower[client] = [self.barber.a5min.val]
+                upper[client] = [self.barber.a5max.val]
+
+        out = self.barber.core_df[:]
+        #Save out a cut verison of the original dataframe
+        for client in list(self.barber.lowers):
+            out = out[out[client] >= lower[client][0]]
+            out = out[out[client] <= upper[client][0]]
+        out.to_csv('dataframe_cuts.csv',sep=',')
+
+        #Save out the cuts if the user wants to apply them again
+        cut = pd.concat([lower, upper], keys=['lower','upper'])
+        cut.to_csv('barber_cuts.csv',sep=',')
 
 def get_histograms(barber, dff):
     uu = np.vstack((dff[barber.namex].values, dff[barber.namey].values))
