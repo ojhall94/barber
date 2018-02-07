@@ -21,21 +21,28 @@ import pandas as pd
 from external_functions import *
 
 class open:
-    def __init__(self, _X, _Y, _namex, _namey):
+    def __init__(self, _core_df, _namex, _namey):
         '''
         A class that initialises the barbershop class which all other content is
         appended to.
 
         Parameters:
-            _X (ndarray): The uncut X values to be used to illustrate the data.
-            _Y (ndarray): The uncut Y values to be used to illustrate the data.
-            _namex (str): The name of the X values
-            _namey (str): The name of the Y values
+            _core_df (pandas.core.frame.DataFrame): A dataframe containing all
+                        data the user wishes to call in this module.
+            _namex (str): The name of the X values in _core_df
+            _namey (str): The name of the Y values in _core_df
         '''
-        self.X = _X
-        self.Y = _Y
+        #Check contents is a dataframe
+        if not isinstance(_core_df, pd.core.frame.DataFrame):
+            print('Please enter in a pandas DataFrame containing the data.')
+            self.close_shop()
+            return None
+
+        self.core_df = _core_df
         self.namex = _namex
         self.namey = _namey
+        self.X = self.core_df[self.namex]
+        self.Y = self.core_df[self.namey]
 
         #Premeptively turn both histograms off
         self.hist_x_on = False
@@ -67,7 +74,7 @@ class open:
         self.hist_x_on = x
         self.hist_y_on = y
 
-    def add_client(self, client, name, lower=-np.inf, upper=np.inf):
+    def add_client(self, name, lower=-np.inf, upper=np.inf):
         '''
         A function that allows the user to add a parameter to make cuts in, up to
         a maximum of five. The user has the option of setting lower and upper
@@ -79,9 +86,9 @@ class open:
             client (ndarray): an array as the same length as self.X and self.Y,
                 arranged identically, with parameter values for each data point.
 
-            name (str): a string containing the name of the ndarray client,
-                which will be referred to in other functions and printed on the
-                GUI.
+            name (str): a string containing the name of the dataframe column to
+                make cuts in, which will be referred to in other functions and
+                printed on the GUI.
 
             lower (float): Default -Inf. The lowest possible value of the cut
                 in this parameter space. If no value is given, it takes the
@@ -91,6 +98,16 @@ class open:
                 in this parameter space. If no value is given, it takes the
                 highest value in the 'client' ndarray.
         '''
+        #Call the data from the core dataframe
+        try:
+            client = self.core_df[name]
+        except KeyError:
+            print('The handle "'+str(name)+'" is not affiliated with a dataframe column.')
+            print('Please enter a correct handle, or re-open the barbershop with a different dataframe.')
+            print('Client leaving the barbershop.')
+            print('Number of seats in use : '+str(self.clients)+'/5.')
+            return None
+
         #Check that the list of clients isn't already full
         if self.clients == 5:
             print('The barbershop is full, please proceed to plot the GUI, or remove clients using the evict_client(name) command.')
@@ -175,8 +192,9 @@ class open:
         del self.namex
         del self.namey
 
-        print('All metadata have been deleted from memory.')
+        print('All array and cuts metadata have been deleted from memory.')
         print('Please re-initialize the module.')
+        print('\n\n')
 
     def show_mirror(self):
         '''
