@@ -125,57 +125,63 @@ class haircutclass:
                 pass
             self.barber.figs[idx].canvas.draw_idle()
 
-        # #Update histograms, if they exist
-        if any([self.barber.hist_x_on, self.barber.hist_y_on]):
-            if not all([self.barber.hist_x_on, self.barber.hist_y_on]):
-                #If only one histogram is turned on
-                self.barber.Hax.cla()
-                if self.hist_x_on:
-                    #Plot original line in red
-                    self.barber.Hax.hist(\
-                        self.barber.shave(self.barber.lowers, self.barber.uppers)[self.barber.namex],\
-                        histtype='step', color='r', bins=self.barber.bins, label='Initial Cut')
-                    self.barber.Hax.set_ylabel('Counts')
-                    self.barber.Hax.set_xlabel(self.barber.namex)
-                    #Plot updated histogram with same bins
-                    self.barber.Hax.hist(uu[0], histtype='step', color='k', bins=self.barber.bins, label='Post-Cuts')
-                else:
-                    #Plot original line in red
-                    self.barber.Hax.hist(\
-                        self.barber.shave(self.barber.lowers, self.barber.uppers)[self.barber.namey],\
-                        histtype='step', color='r', bins=self.barber.bins, label='Initial Cut')
-                    self.barber.Hax.set_ylabel('Counts')
-                    self.barber.Hax.set_xlabel(self.barber.namey)
-                    #Plot updated histogram with same bins
-                    self.barber.Hax.hist(uu[1], histtype='step', color='k', bins=self.barber.bins, label='Post-Cuts')
-                self.barber.Hax.legend(loc='best',fancybox=True)
-            else:
-                #If both histograms are turned on
-                self.barber.Hax[0].cla()
-                self.barber.Hax[1].cla()
+        #Update the histograms
+        get_histograms(self.barber, dff)
+
+    def save(self, val):
+        print('hi')
+
+def get_histograms(barber, dff):
+    uu = np.vstack((dff[barber.namex].values, dff[barber.namey].values))
+
+    # #Update histograms, if they exist
+    if any([barber.hist_x_on, barber.hist_y_on]):
+        if not all([barber.hist_x_on, barber.hist_y_on]):
+            #If only one histogram is turned on
+            barber.Hax.cla()
+            if hist_x_on:
                 #Plot original line in red
-                self.barber.Hax[0].hist(\
-                    self.barber.shave(self.barber.lowers, self.barber.uppers)[self.barber.namex],\
-                    histtype='step', color='r', bins=self.barber.bins, label='Initial Cut')
-                self.barber.Hax[1].hist(\
-                    self.barber.shave(self.barber.lowers, self.barber.uppers)[self.barber.namey],\
-                    histtype='step', color='r', bins=self.barber.bins, label='Initial Cut')
-                #Plot updated histograms with same bins
-                self.barber.Hax[0].hist(uu[0],\
-                        histtype='step', color='k', bins=self.barber.bins)
-                self.barber.Hax[1].hist(uu[1],\
-                        histtype='step', color='k', bins=self.barber.bins)
-                self.barber.Hax[0].set_ylabel('Counts')
-                self.barber.Hax[0].set_xlabel(self.barber.namex)
-                self.barber.Hax[1].set_ylabel('Counts')
-                self.barber.Hax[1].set_xlabel(self.barber.namey)
-                self.barber.Hax[0].legend(loc='best', fancybox=True)
-                self.barber.Hax[1].legend(loc='best', fancybox=True)
+                barber.Hax.hist(\
+                    barber.shave(barber.lowers, barber.uppers)[barber.namex],\
+                    histtype='step', color='r', bins=barber.bins, label='Initial Cut')
+                barber.Hax.set_ylabel('Counts')
+                barber.Hax.set_xlabel(barber.namex)
+                #Plot updated histogram with same bins
+                barber.Hax.hist(uu[0], histtype='step', color='k', bins=barber.bins, label='Post-Cuts')
+            else:
+                #Plot original line in red
+                barber.Hax.hist(\
+                    barber.shave(barber.lowers, barber.uppers)[barber.namey],\
+                    histtype='step', color='r', bins=barber.bins, label='Initial Cut')
+                barber.Hax.set_ylabel('Counts')
+                barber.Hax.set_xlabel(barber.namey)
+                #Plot updated histogram with same bins
+                barber.Hax.hist(uu[1], histtype='step', color='k', bins=barber.bins, label='Post-Cuts')
+            barber.Hax.legend(loc='best',fancybox=True)
+        else:
+            #If both histograms are turned on
+            barber.Hax[0].cla()
+            barber.Hax[1].cla()
+            #Plot original line in red
+            barber.Hax[0].hist(\
+                barber.shave(barber.lowers, barber.uppers)[barber.namex],\
+                histtype='step', color='r', bins=barber.bins, label='Initial Cut')
+            barber.Hax[1].hist(\
+                barber.shave(barber.lowers, barber.uppers)[barber.namey],\
+                histtype='step', color='r', bins=barber.bins, label='Initial Cut')
+            #Plot updated histograms with same bins
+            barber.Hax[0].hist(uu[0],\
+                    histtype='step', color='k', bins=barber.bins)
+            barber.Hax[1].hist(uu[1],\
+                    histtype='step', color='k', bins=barber.bins)
+            barber.Hax[0].set_ylabel('Counts')
+            barber.Hax[0].set_xlabel(barber.namex)
+            barber.Hax[1].set_ylabel('Counts')
+            barber.Hax[1].set_xlabel(barber.namey)
+            barber.Hax[0].legend(loc='best', fancybox=True)
+            barber.Hax[1].legend(loc='best', fancybox=True)
 
-            self.barber.Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
-            self.barber.Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
+        barber.Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
+        barber.Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-            self.barber.Hfig.canvas.draw_idle()
-
-def histograms(barber, dff):
-    
+        barber.Hfig.canvas.draw_idle()

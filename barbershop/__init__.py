@@ -196,39 +196,17 @@ class open:
         '''
         INITIATING HISTOGRAMS
         '''
-        #Initialise initial histograms if requested
+        #Initialise initial histograms axes if requested
         if any([self.hist_x_on, self.hist_y_on]):
             self.bins = int(np.sqrt(len(dff)))      #Save out number of bins for histograms
             if not all([self.hist_x_on, self.hist_y_on]):
-                #If only one histogram is turned on
                 self.Hfig, self.Hax = plt.subplots()              #Create the figure
-                if self.hist_x_on:
-                    self.Hax.hist(dff[self.namex],\
-                            histtype='step', color='k', bins=self.bins)
-                    self.Hax.set_ylabel('Counts')
-                    self.Hax.set_xlabel(self.namex)
-                else:
-                    self.Hax.hist(dff[self.namey],\
-                            histtype='step', color='k', bins=self.bins)
-                    self.Hax.set_ylabel('Counts')
-                    self.Hax.set_xlabel(self.namey)
-
             else:
                 #If both histograms are turned on
                 self.Hfig, self.Hax = plt.subplots(2)         #Create the figure
-                self.Hax[0].hist(dff[self.namex],\
-                        histtype='step', color='k', bins=self.bins)
-                self.Hax[1].hist(dff[self.namey],\
-                        histtype='step', color='k', bins=self.bins)
-                self.Hax[0].set_ylabel('Counts')
-                self.Hax[0].set_xlabel(self.namex)
-                self.Hax[1].set_ylabel('Counts')
-                self.Hax[1].set_xlabel(self.namey)
 
-            self.Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
-            self.Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
-
-            #Saving out the histogram axis for a redraw
+            #Populated histograms
+            get_histograms(self, dff)
 
 
         '''
@@ -246,12 +224,10 @@ class open:
             self.axes[idx].set_axisbelow(True)
             self.axes[idx].set_xlabel(self.namex)
             self.axes[idx].set_ylabel(self.namey)
-            # self.axes[idx].set_xlim(np.nanmin(self.seating[self.namex])\
-            #                         +0.1*np.nanmin(self.seating[self.namex]),\
-            #                         np.nanmax(self.seating[self.namex])\
-            #                         +0.1*np.nanmin(self.seating[self.namex]))
-            # self.axes[idx].set_ylim(np.nanmin(self.seating[self.namey]),\
-            #                         np.nanmax(self.seating[self.namey]))
+            self.axes[idx].set_xlim(np.nanmin(self.seating[self.namex]),\
+                                    np.nanmax(self.seating[self.namex]))
+            self.axes[idx].set_ylim(np.nanmin(self.seating[self.namey]),\
+                                    np.nanmax(self.seating[self.namey]))
 
         '''
         INITIATING SLIDERS
@@ -406,7 +382,7 @@ class open:
         y0 = (Sax[-1].get_position().y0) - (Sax[0].get_position().y0 - Sax[1].get_position().y0)
         tax = plt.axes([l.x0, y0, (l.width-0.05)/2, l.height])
         self.savebut = Button(tax, 'Save Cuts', color=axcolor, hovercolor='green')
-        self.savebut.on_clicked(self.save())
+        self.savebut.on_clicked(haircut.save)
 
         tax = plt.axes([l.x0+(l.width-0.05)/2+0.05, y0, (l.width-0.05)/2, l.height])
         self.closebut = Button(tax, 'Close Plots', color=axcolor, hovercolor='red')
@@ -477,5 +453,6 @@ class open:
             dff = dff[dff[client] <= upper[client][0]]
         return dff
 
-    def save(self):
-        print ('Not done yet')
+    def check_seating(self):
+        print('Number of seats in use : '+str(self.clients)+'/5:')
+        print(list(self.lowers))

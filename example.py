@@ -8,13 +8,13 @@ import ClosePlots as cp
 # y = np.linspace(0,10,1000)
 # z = np.linspace(0,10,1000)
 
-x = np.arange(500)
-y = np.arange(500)
-z = np.arange(500)
+x = np.arange(10)
+y = np.arange(10)
+z = np.arange(10)
 
 barber = barbershop.open(x, y, 'x', 'y')
 barber.histograms_on(x=True,y=True)
-barber.add_client(z, 'z')
+barber.add_client(z, 'z', lower=1., upper=5.)
 # barber.add_client(z, 'n')
 # barber.add_client(z, 'a')
 # barber.add_client(z, 'b')
@@ -22,7 +22,7 @@ barber.add_client(z, 'z')
 
 barber.show_mirror()
 
-del barber
+# del barber
 
 '''
 check_seating
