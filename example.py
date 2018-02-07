@@ -20,14 +20,13 @@ barber.histograms_on(x=True,y=True)
 
 barber.add_client('z', lower=1., upper=5.)
 barber.add_client('n')
-# barber.add_client('a')
-# barber.add_client('b')
-# barber.add_client('c')
+
+barber.give_savelocs('test.csv','testcuts.csv')
 
 barber.show_mirror()
 
 barber.close_shop()
 barber = barbershop.open(df, 'x', 'y')
-barber.get_regular('barber_cuts.csv')
+barber.get_regular('testcuts.csv')
 
 del barber

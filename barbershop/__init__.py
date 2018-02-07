@@ -6,7 +6,7 @@ A Python package that aids the user in making dynamic cuts to data in various
 parameter spaces, using a simple GUI.
 
 .. versioncreated:: 0.1
-.. versionchanged:: 0.2
+.. versionchanged:: 0.6
 
 .. codeauthor:: Oliver James Hall <ojh251@student.bham.ac.uk>
 """
@@ -53,6 +53,8 @@ class open:
         self.seating = pd.DataFrame({self.namex: self.X, self.namey : self.Y})
         self.lowers = pd.DataFrame()
         self.uppers = pd.DataFrame()
+        self.floc = 'dataframe_cut.csv'
+        self.cloc = 'cuts.csv'
 
         #Check X and Y are of equal length
         if len(self.X) != len(self.Y):
@@ -523,3 +525,18 @@ class open:
     def check_seating(self):
         print('Number of seats in use : '+str(self.clients)+'/5:')
         print(list(self.lowers))
+
+    def give_savelocs(self, floc='dataframe_cut.csv', cloc='cuts.csv'):
+        '''
+        A function to be called by the user to feed in custom locations to save
+        the output of the module.
+
+        Parameters:
+            floc (str): Default 'dataframe_cut.csv'. The output location of the
+                cut version of the DataFrame fed into barbershop.open().
+
+            cloc (str): Default 'cuts.csv'. The output location of the list of
+                cuts made to the data.
+        '''
+        self.floc = floc
+        self.cloc = cloc

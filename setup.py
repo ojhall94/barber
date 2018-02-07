@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='barbershop',
-      version='0.5',
+      version='0.6',
       description='A Python package that aids the user in making dynamic cuts to data in various parameter spaces, using a simple GUI.',
       url='https://github.com/ojhall94/barber',
       author='Oliver James Hall',

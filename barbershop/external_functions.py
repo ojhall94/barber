@@ -160,12 +160,12 @@ class haircutclass:
         for client in list(self.barber.lowers):
             out = out[out[client] >= lower[client][0]]
             out = out[out[client] <= upper[client][0]]
-        out.to_csv('dataframe_cuts.csv',header=True,sep=' ')
+        out.to_csv(self.barber.floc,header=True,sep=' ')
 
         #Save out the cuts if the user wants to apply them again
         cut = pd.concat([lower, upper])
         cut.index = ['lower','upper']
-        cut.to_csv('barber_cuts.csv',header=True,sep=' ')
+        cut.to_csv(self.barber.cloc,header=True,sep=' ')
 
         plt.close('all')
 
