@@ -11,7 +11,6 @@ setup(name='barbershop',
       install_requires=[
             'matplotlib',
             'pandas',
-            'datetime',
             'numpy'
       ],
       zip_safe=False)

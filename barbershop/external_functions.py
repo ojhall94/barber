@@ -19,16 +19,31 @@ class barbicideclass:
         self.barber = _barber
 
     def all(self, event):
-        self.barber.a1min.reset()
-        self.barber.a1max.reset()
-        self.barber.a2min.reset()
-        self.barber.a2max.reset()
-        self.barber.a3min.reset()
-        self.barber.a3max.reset()
-        self.barber.a4min.reset()
-        self.barber.a4max.reset()
-        self.barber.a5min.reset()
-        self.barber.a5max.reset()
+        try:
+            self.barber.a1min.reset()
+            self.barber.a1max.reset()
+        except AttributeError:
+            pass
+        try:
+            self.barber.a2min.reset()
+            self.barber.a2max.reset()
+        except AttributeError:
+            pass
+        try:
+            self.barber.a3min.reset()
+            self.barber.a3max.reset()
+        except AttributeError:
+            pass
+        try:
+            self.barber.a4min.reset()
+            self.barber.a4max.reset()
+        except AttributeError:
+            pass
+        try:
+            self.barber.a5min.reset()
+            self.barber.a5max.reset()
+        except AttributeError:
+            pass
 
     def a1min(self, event):
         self.barber.a1min.reset()
@@ -94,9 +109,6 @@ class haircutclass:
                 lower[client] = [self.barber.a5min.val]
                 upper[client] = [self.barber.a5max.val]
 
-        print(lower)
-        print(upper)
-
         #Get new, cut dataset
         dff = self.barber.shave(lower, upper)
 
@@ -106,7 +118,61 @@ class haircutclass:
         #Update all the axes and colourbars
         for idx, client in enumerate(list(self.barber.lowers)):
             self.barber.axes[idx].collections[0].set_offsets(uu.T)
-            self.barber.axes[idx].collections[0].set_clim([np.nanmin(dff[client]),np.nanmax(dff[client])])
+            self.barber.axes[idx].collections[0].set_array(dff[client])
+            try:
+                self.barber.axes[idx].collections[0].set_clim([np.nanmin(dff[client]),np.nanmax(dff[client])])
+            except ValueError:
+                pass
             self.barber.figs[idx].canvas.draw_idle()
 
-        #Draw idle plots
+        # #Update histograms, if they exist
+        if any([self.barber.hist_x_on, self.barber.hist_y_on]):
+            if not all([self.barber.hist_x_on, self.barber.hist_y_on]):
+                #If only one histogram is turned on
+                self.barber.Hax.cla()
+                if self.hist_x_on:
+                    #Plot original line in red
+                    self.barber.Hax.hist(\
+                        self.barber.shave(self.barber.lowers, self.barber.uppers)[self.barber.namex],\
+                        histtype='step', color='r', bins=self.barber.bins, label='Initial Cut')
+                    self.barber.Hax.set_ylabel('Counts')
+                    self.barber.Hax.set_xlabel(self.barber.namex)
+                    #Plot updated histogram with same bins
+                    self.barber.Hax.hist(uu[0], histtype='step', color='k', bins=self.barber.bins, label='Post-Cuts')
+                else:
+                    #Plot original line in red
+                    self.barber.Hax.hist(\
+                        self.barber.shave(self.barber.lowers, self.barber.uppers)[self.barber.namey],\
+                        histtype='step', color='r', bins=self.barber.bins, label='Initial Cut')
+                    self.barber.Hax.set_ylabel('Counts')
+                    self.barber.Hax.set_xlabel(self.barber.namey)
+                    #Plot updated histogram with same bins
+                    self.barber.Hax.hist(uu[1], histtype='step', color='k', bins=self.barber.bins, label='Post-Cuts')
+                self.barber.Hax.legend(loc='best',fancybox=True)
+            else:
+                #If both histograms are turned on
+                self.barber.Hax[0].cla()
+                self.barber.Hax[1].cla()
+                #Plot original line in red
+                self.barber.Hax[0].hist(\
+                    self.barber.shave(self.barber.lowers, self.barber.uppers)[self.barber.namex],\
+                    histtype='step', color='r', bins=self.barber.bins, label='Initial Cut')
+                self.barber.Hax[1].hist(\
+                    self.barber.shave(self.barber.lowers, self.barber.uppers)[self.barber.namey],\
+                    histtype='step', color='r', bins=self.barber.bins, label='Initial Cut')
+                #Plot updated histograms with same bins
+                self.barber.Hax[0].hist(uu[0],\
+                        histtype='step', color='k', bins=self.barber.bins)
+                self.barber.Hax[1].hist(uu[1],\
+                        histtype='step', color='k', bins=self.barber.bins)
+                self.barber.Hax[0].set_ylabel('Counts')
+                self.barber.Hax[0].set_xlabel(self.barber.namex)
+                self.barber.Hax[1].set_ylabel('Counts')
+                self.barber.Hax[1].set_xlabel(self.barber.namey)
+                self.barber.Hax[0].legend(loc='best', fancybox=True)
+                self.barber.Hax[1].legend(loc='best', fancybox=True)
+
+            self.barber.Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
+            self.barber.Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+            self.barber.Hfig.canvas.draw_idle()

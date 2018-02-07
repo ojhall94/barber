@@ -4,14 +4,18 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 import ClosePlots as cp
 
-x = np.linspace(0,10,1000)
-y = np.linspace(0,10,1000)
-z = np.linspace(0,10,1000)
+# x = np.linspace(0,10,1000)
+# y = np.linspace(0,10,1000)
+# z = np.linspace(0,10,1000)
+
+x = np.arange(50000)
+y = np.arange(50000)
+z = np.arange(50000)
 
 barber = barbershop.open(x, y, 'x', 'y')
 barber.histograms_on(x=True,y=True)
-barber.add_client(z, 'z', lower=2., upper=8.)
-barber.add_client(z*20000, 'n', lower=30000., upper=90000.)
+barber.add_client(z, 'z')
+barber.add_client(z, 'n')
 barber.add_client(z, 'a')
 barber.add_client(z, 'b')
 barber.add_client(z, 'c')

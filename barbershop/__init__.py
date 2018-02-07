@@ -193,55 +193,69 @@ class open:
         #Make initial cuts
         dff = self.shave(self.lowers, self.uppers)
 
+        '''
+        INITIATING HISTOGRAMS
+        '''
         '''PUT HISTOGRAMS IN A SEPERATE FUNCTION'''
         #Initialise initial histograms if requested
         if any([self.hist_x_on, self.hist_y_on]):
             self.bins = int(np.sqrt(len(dff)))      #Save out number of bins for histograms
             if not all([self.hist_x_on, self.hist_y_on]):
                 #If only one histogram is turned on
-                Hfig, Hax = plt.subplots()              #Create the figure
+                self.Hfig, self.Hax = plt.subplots()              #Create the figure
                 if self.hist_x_on:
-                    Hax.hist(dff[self.namex],\
+                    self.Hax.hist(dff[self.namex],\
                             histtype='step', color='k', bins=self.bins)
-                    Hax.set_ylabel('Counts')
-                    Hax.set_xlabel(self.namex)
+                    self.Hax.set_ylabel('Counts')
+                    self.Hax.set_xlabel(self.namex)
                 else:
-                    Hax.hist(dff[self.namey],\
+                    self.Hax.hist(dff[self.namey],\
                             histtype='step', color='k', bins=self.bins)
-                    Hax.set_ylabel('Counts')
-                    Hax.set_xlabel(self.namey)
+                    self.Hax.set_ylabel('Counts')
+                    self.Hax.set_xlabel(self.namey)
 
             else:
-                Hfig, Hax = plt.subplots(2)         #Create the figure
-                Hax[0].hist(dff[self.namex],\
+                #If both histograms are turned on
+                self.Hfig, self.Hax = plt.subplots(2)         #Create the figure
+                self.Hax[0].hist(dff[self.namex],\
                         histtype='step', color='k', bins=self.bins)
-                Hax[1].hist(dff[self.namey],\
+                self.Hax[1].hist(dff[self.namey],\
                         histtype='step', color='k', bins=self.bins)
-                Hax[0].set_ylabel('Counts')
-                Hax[0].set_xlabel(self.namex)
-                Hax[1].set_ylabel('Counts')
-                Hax[1].set_xlabel(self.namey)
+                self.Hax[0].set_ylabel('Counts')
+                self.Hax[0].set_xlabel(self.namex)
+                self.Hax[1].set_ylabel('Counts')
+                self.Hax[1].set_xlabel(self.namey)
 
-            Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
-            Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
+            self.Hfig.suptitle('Histograms of the data. Pre-cuts shown in red.')
+            self.Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
+            #Saving out the histogram axis for a redraw
+
+
+        '''
+        INITIATING PLOTS
+        '''
         #Initialise all display parameter plots
-        cmaps = ['cool','winter','plasma','viridis','nipy_spectral']
+        cmaps = ['nipy_spectral','winter','plasma','viridis','cool']
         self.figs, self.axes = self.get_shells()
         #Create first build of plots
         for idx, client in enumerate(list(self.lowers)):
             ctemp = self.axes[idx].scatter(dff[self.namex],dff[self.namey],\
-                        cmap = cmaps[idx], c=dff[client], s=3)
+                        cmap = cmaps[idx], c=dff[client], s=20)
             self.figs[idx].colorbar(ctemp, label=client)
             self.axes[idx].grid()
             self.axes[idx].set_axisbelow(True)
             self.axes[idx].set_xlabel(self.namex)
             self.axes[idx].set_ylabel(self.namey)
+            # self.axes[idx].set_xlim(np.nanmin(self.seating[self.namex])\
+            #                         +0.1*np.nanmin(self.seating[self.namex]),\
+            #                         np.nanmax(self.seating[self.namex])\
+            #                         +0.1*np.nanmin(self.seating[self.namex]))
+            # self.axes[idx].set_ylim(np.nanmin(self.seating[self.namey]),\
+            #                         np.nanmax(self.seating[self.namey]))
 
-        #Initialise sliders
-        '''THIS COMPONENT IS ITERATIVE BUT THE GUI IS NOT IDEAL
-        TO DO:
-            -Add space for buttons
+        '''
+        INITIATING SLIDERS
         '''
         #Initialise barbercide class for button functions
         barbicide = barbicideclass(self)
@@ -460,8 +474,8 @@ class open:
         dff = self.seating[:]
         #Apply cuts cyclicly for every client
         for client in list(self.lowers):
-            dff = dff[dff[client] > lower[client][0]]
-            dff = dff[dff[client] < upper[client][0]]
+            dff = dff[dff[client] >= lower[client][0]]
+            dff = dff[dff[client] <= upper[client][0]]
         return dff
 
     def save(self):
