@@ -196,7 +196,6 @@ class open:
         '''
         INITIATING HISTOGRAMS
         '''
-        '''PUT HISTOGRAMS IN A SEPERATE FUNCTION'''
         #Initialise initial histograms if requested
         if any([self.hist_x_on, self.hist_y_on]):
             self.bins = int(np.sqrt(len(dff)))      #Save out number of bins for histograms

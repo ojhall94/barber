@@ -176,3 +176,6 @@ class haircutclass:
             self.barber.Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
             self.barber.Hfig.canvas.draw_idle()
+
+def histograms(barber, dff):
+    
