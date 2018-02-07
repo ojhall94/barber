@@ -235,8 +235,9 @@ class open:
         print('All read-in labels correspond to columns in the loaded dataframe.')
         if self.clients > 0:
             print('Overwriting current clients...')
-            self.seating = pd.DataFrame()
-            self.clients == 0
+            self.seating = pd.DataFrame({self.namex: self.X, self.namey : self.Y})
+            self.clients = 0
+
         for client in list(self.lowers):
             self.seating[client] = self.core_df[client]
             self.clients += 1

@@ -27,11 +27,7 @@ barber.add_client('n')
 barber.show_mirror()
 
 barber.close_shop()
-barber = barbershop.open(df, 'x', 'z')
+barber = barbershop.open(df, 'x', 'y')
 barber.get_regular('barber_cuts.csv')
 
 del barber
-
-'''
-barbiside [reset cuts]?
-'''
