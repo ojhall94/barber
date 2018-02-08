@@ -223,3 +223,15 @@ def get_histograms(barber, dff):
         barber.Hfig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
         barber.Hfig.canvas.draw_idle()
+
+def quartet():
+    import webbrowser
+    url = 'https://www.youtube.com/watch?v=VNUgsbKisp8'
+
+    try:
+        webbrowser.get(using='google-chrome').open(url, new=2)
+    except:
+        try:
+            webbrowser.get(using='firefox').open(url, new=2)
+        except:
+            pass
