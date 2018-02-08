@@ -18,7 +18,7 @@ from matplotlib.widgets import Slider, Button
 import glob as glob
 import pandas as pd
 
-from external_functions import *
+from .external_functions import *
 
 class open:
     def __init__(self, _core_df, _namex, _namey):
