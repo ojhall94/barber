@@ -175,7 +175,7 @@ class open:
         del self.lowers[name]
         del self.uppers[name]
         self.clients -= 1
-
+        print('Client '+str(name)+' has been evicted.')
         print('Number of seats in use : '+str(self.clients)+'/5.')
 
     def close_shop(self):
@@ -326,11 +326,11 @@ class open:
                                 valinit = self.uppers[client][0])
                 #Reset button for minimum slider
                 l = Sax[int(2*idx)].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a1minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
                 #Reset button for maximum slider
                 l = Sax[int(2*idx)+1].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a1maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
@@ -353,11 +353,11 @@ class open:
 
                 #Reset button for minimum slider
                 l = Sax[int(2*idx)].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a2minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
                 #Reset button for maximum slider
                 l = Sax[int(2*idx)+1].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a2maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
@@ -380,11 +380,11 @@ class open:
 
                 #Reset button for minimum slider
                 l = Sax[int(2*idx)].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a3minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
                 #Reset button for maximum slider
                 l = Sax[int(2*idx)+1].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a3maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
@@ -407,11 +407,11 @@ class open:
 
                 #Reset button for minimum slider
                 l = Sax[int(2*idx)].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a4minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
                 #Reset button for maximum slider
                 l = Sax[int(2*idx)+1].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a4maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
@@ -434,11 +434,11 @@ class open:
 
                 #Reset button for minimum slider
                 l = Sax[int(2*idx)].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a5minres = Button(tax, 'Reset '+client+' Min', color=axcolor, hovercolor='0.7')
                 #Reset button for maximum slider
                 l = Sax[int(2*idx)+1].get_position()
-                tax = plt.axes([l.x0+l.width+0.1, l.y0, 0.15, l.height])
+                tax = plt.axes([l.x0+l.width+0.08, l.y0, 0.18, l.height])
                 self.a5maxres = Button(tax, 'Reset '+client+' Max', color=axcolor, hovercolor='0.7')
 
                 #Update commands for the widgets
@@ -457,7 +457,7 @@ class open:
         self.closebut = Button(tax, 'Close Plots', color=axcolor, hovercolor='red')
         self.closebut.on_clicked(barbicide.plots)
 
-        tax = plt.axes([l.x0+l.width+0.1, y0, 0.15, l.height])
+        tax = plt.axes([l.x0+l.width+0.08, y0, 0.18, l.height])
         self.resetbut = Button(tax, 'Reset All', color=axcolor, hovercolor='orange')
         self.resetbut.on_clicked(barbicide.all)
 
