@@ -316,13 +316,13 @@ class open:
             if (self.clients >= 1) & (idx == 0):
                 #Minimum value in parameter space 'client'
                 self.a1min = Slider(Sax[int(2*idx)], 'Min '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.lowers[client][0])
                 #Maximum value in parameter space 'client'
                 self.a1max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.uppers[client][0])
                 #Reset button for minimum slider
                 l = Sax[int(2*idx)].get_position()
