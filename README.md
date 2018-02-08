@@ -1,7 +1,4 @@
 # barbershop
-A Python package that aids the user in making dynamic cuts to data in various parameter spaces, using a simple GUI.
-
-# barbershop
 
 barbershop is a Python module that aids the user in making dynamic cuts to data in various parameter spaces & investigate said data spaces, using a simple GUI.
 
