@@ -17,6 +17,21 @@ To install barbershop on your local UNIX machine, you can install it from comman
 sudo pip install barbershop
 ```
 
+or if you don't have root privileges on your system:
+
+```
+pip install barbershop --user
+```
+
+For installations to Python3, please use
+
+```
+pip3
+python3
+```
+
+instead of pip and python in the commands respectively.
+
 If you enjoy hacking or want to contribute to barbershop, feel free to clone the Git repository and branch off to make your own changes.
 In a directory of your choice, run the following from commandline:
 
