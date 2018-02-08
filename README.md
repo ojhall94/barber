@@ -2,6 +2,9 @@
 
 barbershop is a Python module that aids the user in making dynamic cuts to data in various parameter spaces & investigate said data spaces, using a simple GUI.
 
+NOTE: API documentation for this package is not available yet (working on it!). The example enclosed
+in this repo goes through the full functionality step by step though, so please use that in the mean time.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine.
