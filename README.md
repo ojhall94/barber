@@ -7,8 +7,7 @@ in this repo goes through the full functionality step by step though, so please 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine.
-NOTE: This build does not yet function without bugs for Python3.x, and is optimised for Python 2.7.x only.
+These instructions will get you a copy of the project up and running on your local machine. barbershop now functions in both Python 2.x and 3.x.
 
 ### Installing
 
