@@ -54,7 +54,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Authors
 
-* **Oliver James Hall** - [Github](https://github.com/ojhall94) | [Email](ojhall94@gmail.com) | [Twitter](https://www.twitter.com/ojhall94)
+* **Oliver James Hall** - Email: ojhall94@gmail.com | [Github](https://github.com/ojhall94) | [Twitter](https://www.twitter.com/ojhall94)
 
 If you have any questions about the package or wish to contribute, please drop me a message on any of the above platforms.
 

@@ -28,4 +28,4 @@ Drop me an email, a tweet, or a message on any of the platforms below!
 
 I hope barbershop helps enhance your science. Have fun!
 
-Oliver | [Github](https://github.com/ojhall94) | [Email](ojhall94@gmail.com) | [Twitter](https://www.twitter.com/ojhall94)
+Oliver | Email: ojhall94@gmail.com | [Github](https://github.com/ojhall94) | [Twitter](https://www.twitter.com/ojhall94)
