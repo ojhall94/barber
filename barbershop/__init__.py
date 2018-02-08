@@ -282,7 +282,7 @@ class open:
         INITIATING PLOTS
         '''
         #Initialise all display parameter plots
-        cmaps = ['autumn','winter','plasma','viridis','cool']
+        cmaps = ['viridis','winter','plasma','GnBu','cool']
         self.figs, self.axes = self.get_shells()
         #Create first build of plots
         for idx, client in enumerate(list(self.lowers)):
@@ -340,15 +340,15 @@ class open:
                 self.a1maxres.on_clicked(barbicide.a1max)
 
             if (self.clients >= 2) & (idx == 1):
-                #Maximum value in parameter space 'client'
-                self.a2min = Slider(Sax[int(2*idx)], 'Min '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
-                                valinit = self.lowers[client][0])
                 #Minimum value in parameter space 'client'
+                self.a2min = Slider(Sax[int(2*idx)], 'Min '+client,\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
+                                valinit = self.lowers[client][0])
+                #Maximum value in parameter space 'client'
                 self.a2max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.uppers[client][0])
 
                 #Reset button for minimum slider
@@ -369,13 +369,13 @@ class open:
             if (self.clients >= 3) & (idx == 2):
                 #Maximum value in parameter space 'client'
                 self.a3min = Slider(Sax[int(2*idx)], 'Min '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.lowers[client][0])
                 #Minimum value in parameter space 'client'
                 self.a3max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.uppers[client][0])
 
                 #Reset button for minimum slider
@@ -396,13 +396,13 @@ class open:
             if (self.clients >= 4) & (idx == 3):
                 #Maximum value in parameter space 'client'
                 self.a4min = Slider(Sax[int(2*idx)], 'Min '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.lowers[client][0])
                 #Minimum value in parameter space 'client'
                 self.a4max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.uppers[client][0])
 
                 #Reset button for minimum slider
@@ -423,13 +423,13 @@ class open:
             if (self.clients == 5) & (idx == 4):
                 #Maximum value in parameter space 'client'
                 self.a5min = Slider(Sax[int(2*idx)], 'Min '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.lowers[client][0])
                 #Minimum value in parameter space 'client'
                 self.a5max = Slider(Sax[int(2*idx)+1], 'Max '+client,\
-                                round(np.nanmin(self.seating[client])),\
-                                round(np.nanmax(self.seating[client])),\
+                                np.nanmin(self.seating[client]),\
+                                np.nanmax(self.seating[client]),\
                                 valinit = self.uppers[client][0])
 
                 #Reset button for minimum slider
