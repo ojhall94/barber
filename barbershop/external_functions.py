@@ -177,11 +177,11 @@ def get_histograms(barber, dff):
         if not all([barber.hist_x_on, barber.hist_y_on]):
             #If only one histogram is turned on
             barber.Hax.cla()
-            if hist_x_on:
+            if barber.hist_x_on:
                 #Plot original line in red
                 barber.Hax.hist(\
                     barber.shave(barber.lowers, barber.uppers)[barber.namex],\
-                    histtype='step', color='r', bins=barber.bins, label='Initial Cut')
+                    histtype='step', color='r', bins='sqrt', label='Initial Cut')
                 barber.Hax.set_ylabel('Counts')
                 barber.Hax.set_xlabel(barber.namex)
                 #Plot updated histogram with same bins
@@ -190,7 +190,7 @@ def get_histograms(barber, dff):
                 #Plot original line in red
                 barber.Hax.hist(\
                     barber.shave(barber.lowers, barber.uppers)[barber.namey],\
-                    histtype='step', color='r', bins=barber.bins, label='Initial Cut')
+                    histtype='step', color='r', bins='sqrt', label='Initial Cut')
                 barber.Hax.set_ylabel('Counts')
                 barber.Hax.set_xlabel(barber.namey)
                 #Plot updated histogram with same bins
@@ -203,15 +203,15 @@ def get_histograms(barber, dff):
             #Plot original line in red
             barber.Hax[0].hist(\
                 barber.shave(barber.lowers, barber.uppers)[barber.namex],\
-                histtype='step', color='r', bins=barber.bins, label='Initial Cut')
+                histtype='step', color='r', bins='sqrt', label='Initial Cut')
             barber.Hax[1].hist(\
                 barber.shave(barber.lowers, barber.uppers)[barber.namey],\
-                histtype='step', color='r', bins=barber.bins, label='Initial Cut')
+                histtype='step', color='r', bins='sqrt', label='Initial Cut')
             #Plot updated histograms with same bins
             barber.Hax[0].hist(uu[0],\
-                    histtype='step', color='k', bins=barber.bins)
+                    histtype='step', color='k', bins='sqrt')
             barber.Hax[1].hist(uu[1],\
-                    histtype='step', color='k', bins=barber.bins)
+                    histtype='step', color='k', bins='sqrt')
             barber.Hax[0].set_ylabel('Counts')
             barber.Hax[0].set_xlabel(barber.namex)
             barber.Hax[1].set_ylabel('Counts')
