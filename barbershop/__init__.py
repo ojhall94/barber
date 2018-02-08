@@ -468,6 +468,10 @@ class open:
         Simple class that returns N empty figures where N is the number of
         variables added using the add_client() function.
         '''
+        if self.clients == 0:
+            print('Please add at least one client variable.')
+            return None
+
         if self.clients == 1:
             f1, a1 = plt.subplots()
             return [f1], [a1]
